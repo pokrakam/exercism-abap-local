@@ -1,14 +1,19 @@
-class ZCL_MINESWEEPER definition
-  public
-  final
-  create public .
+CLASS zcl_minesweeper DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
-public section.
-protected section.
-private section.
+  PUBLIC SECTION.
+
+    METHODS annotate
+        IMPORTING
+          !input        TYPE string_table
+        RETURNING
+          VALUE(result) TYPE string_table.
+
 ENDCLASS.
 
+CLASS zcl_minesweeper IMPLEMENTATION.
 
+  METHOD annotate.
+    " add solution here
+  ENDMETHOD.
 
-CLASS ZCL_MINESWEEPER IMPLEMENTATION.
 ENDCLASS.
