@@ -7,7 +7,7 @@ Install using abapGit. Clone to your GitHub user if you would like to push your 
 Either pull the entire package or individual classes using Selective Pull
 
 ## Completing Exercises
-Complete the coding part where indicated. Run the unit tests using <ctrl>-<shift>-<F10>. Set breakpoints if needed to see what is happening.
+Complete the coding part where indicated. Run the unit tests using `<ctrl>-<shift>-<F10>`. Set breakpoints if needed to see what is happening.
 
 ## Submitting Solutions
 Once all unit tests pass, copy and paste the class code into the Exercism exercise editor and verify the Exercism unit tests also pass. 
