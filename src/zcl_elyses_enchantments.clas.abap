@@ -5,46 +5,46 @@ class zcl_elyses_enchantments definition
 
   public section.
 
-    types ty_deck type standard table of i with empty key.
+    types ty_stack type standard table of i with empty key.
 
     methods:
 
       get_item
-        importing deck          type ty_deck
+        importing stack         type ty_stack
                   position      type i
         returning value(result) type i,
 
       set_item
-        importing deck          type ty_deck
+        importing stack         type ty_stack
                   position      type i
                   replacement   type i
-        returning value(result) type ty_deck,
+        returning value(result) type ty_stack,
 
       insert_item_at_top
-        importing deck          type ty_deck
+        importing stack         type ty_stack
                   new_card      type i
-        returning value(result) type ty_deck,
+        returning value(result) type ty_stack,
 
       remove_item
-        importing deck          type ty_deck
+        importing stack         type ty_stack
                   position      type i
-        returning value(result) type ty_deck,
+        returning value(result) type ty_stack,
 
       remove_item_from_top
-        importing deck          type ty_deck
-        returning value(result) type ty_deck,
+        importing stack         type ty_stack
+        returning value(result) type ty_stack,
 
       insert_item_at_bottom
-        importing deck          type ty_deck
+        importing stack         type ty_stack
                   new_card      type i
-        returning value(result) type ty_deck,
+        returning value(result) type ty_stack,
 
       remove_item_at_bottom
-        importing deck          type ty_deck
-        returning value(result) type ty_deck,
+        importing stack         type ty_stack
+        returning value(result) type ty_stack,
 
       get_size_of_stack
-        importing deck          type ty_deck
+        importing stack         type ty_stack
         returning value(result) type i.
 
   protected section.
@@ -56,16 +56,18 @@ endclass.
 class zcl_elyses_enchantments implementation.
 
   method get_item.
-    result = deck[ position ].
+    result = stack[ position ].
   endmethod.
 
   method set_item.
-    result = deck.
-    result[ position ] = replacement.
+    result = stack.
+    "abaplint issue #2452, can't do:  result[ position ] = replacement.
+    assign result[ position ] to field-symbol(<card>).
+    <card> = replacement.
   endmethod.
 
   method insert_item_at_top.
-    result = deck.
+    result = stack.
     append new_card to result.
   endmethod.
 
@@ -74,11 +76,13 @@ class zcl_elyses_enchantments implementation.
   endmethod.
 
   method insert_item_at_bottom.
-    "Implement solution here
+    result = stack.
+    delete result index 1.
   endmethod.
 
   method remove_item.
-    "Implement solution here
+    result = stack.
+    delete result index position.
   endmethod.
 
   method remove_item_at_bottom.
@@ -86,7 +90,8 @@ class zcl_elyses_enchantments implementation.
   endmethod.
 
   method remove_item_from_top.
-    "Implement solution here
+    result = stack.
+    delete result index lines( stack ).
   endmethod.
 
 endclass.
