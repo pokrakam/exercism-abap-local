@@ -39,7 +39,7 @@ class zcl_elyses_enchantments definition
                   new_card      type i
         returning value(result) type ty_stack,
 
-      remove_item_at_bottom
+      remove_item_from_bottom
         importing stack         type ty_stack
         returning value(result) type ty_stack,
 
@@ -60,10 +60,28 @@ class zcl_elyses_enchantments implementation.
   endmethod.
 
   method set_item.
-    result = stack.
-    "abaplint issue #2452, can't do:  result[ position ] = replacement.
-    assign result[ position ] to field-symbol(<card>).
-    <card> = replacement.
+
+    " abaplint issue #2452, can't do:
+*    result = stack.
+*    result[ position ] = replacement.
+
+    " This doesn't work either:
+*    result = stack.
+*    read table result index position assigning field-symbol(<card>).
+*    <card> = replacement.
+
+
+    " Gotta go the old-old-fashioned way:
+
+    clear result.
+    loop at stack into data(card).
+      if sy-tabix = position.
+        append replacement to result.
+      else.
+        append card to result.
+      endif.
+    endloop.
+
   endmethod.
 
   method insert_item_at_top.
@@ -72,12 +90,12 @@ class zcl_elyses_enchantments implementation.
   endmethod.
 
   method get_size_of_stack.
-    "Implement solution here
+    result = lines( stack ).
   endmethod.
 
   method insert_item_at_bottom.
     result = stack.
-    delete result index 1.
+    insert new_card into result index 1.
   endmethod.
 
   method remove_item.
@@ -85,8 +103,9 @@ class zcl_elyses_enchantments implementation.
     delete result index position.
   endmethod.
 
-  method remove_item_at_bottom.
-    "Implement solution here
+  method remove_item_from_bottom.
+    result = stack.
+    delete result index 1.
   endmethod.
 
   method remove_item_from_top.

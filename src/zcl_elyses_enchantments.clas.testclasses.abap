@@ -6,9 +6,9 @@ class lth_stack_tester definition for testing
     data cut type ref to zcl_elyses_enchantments.
 
     methods stack importing cards         type string
-                 returning value(result) type zcl_elyses_enchantments=>ty_stack.
+                  returning value(result) type zcl_elyses_enchantments=>ty_stack.
 
-    methods assert_that importing stack          type zcl_elyses_enchantments=>ty_stack
+    methods assert_that importing stack         type zcl_elyses_enchantments=>ty_stack
                         returning value(result) type ref to lth_stack_tester.
 
     methods equals importing expected type zcl_elyses_enchantments=>ty_stack.
@@ -77,15 +77,18 @@ class ltc_test implementation.
 
   method pick_card.
 
-    cl_abap_unit_assert=>assert_equals( act = cut->get_item( stack = stack( `1 2 3` ) position = 1 )
+    cl_abap_unit_assert=>assert_equals( act = cut->get_item( stack    = stack( `1 2 3` )
+                                                             position = 1 )
                                         exp = 1
                                         msg = 'get the first card' ).
 
-    cl_abap_unit_assert=>assert_equals( act = cut->get_item( stack = stack( `4 5 6` ) position = 2 )
+    cl_abap_unit_assert=>assert_equals( act = cut->get_item( stack    = stack( `4 5 6` )
+                                                             position = 2 )
                                         exp = 5
                                         msg = 'get the middle card' ).
 
-    cl_abap_unit_assert=>assert_equals( act = cut->get_item( stack = stack( `7 8 9` ) position = 3 )
+    cl_abap_unit_assert=>assert_equals( act = cut->get_item( stack    = stack( `7 8 9` )
+                                                             position = 3 )
                                         exp = 9
                                         msg = 'get the last card' ).
 
@@ -94,20 +97,20 @@ class ltc_test implementation.
 
   method sleight_of_hand.
 
-    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack = stack( `1 2 3` )
-                                                             position = 1
+    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack       = stack( `1 2 3` )
+                                                             position    = 1
                                                              replacement = 7 )
                                         exp = stack( `7 2 3` )
                                         msg = 'replace the first card with a 7' ).
 
-    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack = stack( `2 2 2` )
-                                                             position = 2
+    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack       = stack( `2 2 2` )
+                                                             position    = 2
                                                              replacement = 5 )
                                         exp = stack( `2 5 2` )
                                         msg = 'replace the middle card with a 5' ).
 
-    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack = stack( `7 7 6` )
-                                                             position = 3
+    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack       = stack( `7 7 6` )
+                                                             position    = 3
                                                              replacement = 7 )
                                         exp = stack( `7 7 7` )
                                         msg = 'replace the last card with a 7' ).
@@ -125,7 +128,6 @@ class ltc_sleight_of_hand definition final for testing
   private section.
 
     methods setup.
-    METHODS replace_v1.
 
     methods replace_first_card for testing raising cx_static_check.
     methods replace_middle_card for testing raising cx_static_check.
@@ -141,38 +143,27 @@ class ltc_sleight_of_hand implementation.
   endmethod.
 
 
-  method replace_v1.
-
-    "This doesn't work:
-    " cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack = stack( `1 2 3` )
-    "                                                          position = 1
-    "                                                          replacement = 7 )
-    "                                     exp = stack( `7 2 3` )
-    "                                     msg = 'replace the first card with a 7' ).
-
-    "This also doesn't work:
-*    data stack type zcl_elyses_enchantments=>ty_stack.
-*    data act type zcl_elyses_enchantments=>ty_stack.
-*    stack = stack( `7 2 3` ).
-*    act = cut->set_item( stack        = stack( `1 2 3` )
-*                         position    = 1
-*                         replacement = 7 ).
-*    cl_abap_unit_assert=>assert_equals( act = act
-*                                        exp = stack ).
-
-
-  endmethod.
-
   method replace_first_card.
-    assert_that( cut->set_item( stack = stack( `1 2 3` ) position = 1 replacement = 7 ) )->equals_stack( `7 2 3` ).
+
+    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack       = stack( `1 2 3` )
+                                                             position    = 1
+                                                             replacement = 7 )
+                                        exp = stack( `7 2 3` ) ).
   endmethod.
+
 
   method replace_middle_card.
-    assert_that( cut->set_item( stack = stack( `2 2 2` ) position = 2 replacement = 5 ) )->equals_stack( `2 5 2` ).
+    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack       = stack( `2 2 2` )
+                                                             position    = 2
+                                                             replacement = 5 )
+                                        exp = stack( `2 5 2` ) ).
   endmethod.
 
   method replace_last_card.
-    assert_that( cut->set_item( stack = stack( `7 7 6` ) position = 3 replacement = 7 ) )->equals_stack( `7 7 7` ).
+    cl_abap_unit_assert=>assert_equals( act = cut->set_item( stack       = stack( `7 7 6` )
+                                                             position    = 3
+                                                             replacement = 7 )
+                                        exp = stack( `7 7 7` ) ).
   endmethod.
 
 endclass.
@@ -201,19 +192,31 @@ class ltc_add_cards_on_top implementation.
   endmethod.
 
   method add_second_card.
-    assert_that( cut->insert_item_at_top( stack = stack( `1` ) new_card = 5 ) )->equals_stack( `1 5` ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->insert_item_at_top( stack    = stack( `1` )
+                                     new_card = 5 )
+      exp = stack( `1 5` ) ).
   endmethod.
 
   method add_third_card.
-    assert_that( cut->insert_item_at_top( stack = stack( `1 5` ) new_card = 9 ) )->equals_stack( `1 5 9` ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->insert_item_at_top( stack    = stack( `1 5` )
+                                     new_card = 9 )
+      exp = stack( `1 5 9` ) ).
   endmethod.
 
   method add_fourth_card.
-    assert_that( cut->insert_item_at_top( stack = stack( `1 5 9` ) new_card = 2 ) )->equals_stack( `1 5 9 2` ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->insert_item_at_top( stack    = stack( `1 5 9` )
+                                     new_card = 2 )
+      exp = stack( `1 5 9 2` ) ).
   endmethod.
 
   method add_different_fourth_card.
-    assert_that( cut->insert_item_at_top( stack = stack( `1 5 9` ) new_card = 8 ) )->equals_stack( `1 5 9 8` ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->insert_item_at_top( stack    = stack( `1 5 9` )
+                                     new_card = 8 )
+      exp = stack( `1 5 9 8` ) ).
   endmethod.
 
 endclass.
@@ -243,15 +246,24 @@ class ltc_make_cards_disappear implementation.
   endmethod.
 
   method remove_bottom_card.
-    assert_that( cut->remove_item( stack = stack( `1 2 3 4` ) position = 1 ) )->equals( stack( `2 3 4` ) ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->remove_item( stack    = stack( `1 2 3 4` )
+                              position = 1 )
+      exp = stack( `2 3 4` ) ).
   endmethod.
 
   method remove_top_card.
-    assert_that( cut->remove_item( stack = stack( `1 2 3 4` ) position = 4 ) )->equals( stack( `1 2 3` ) ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->remove_item( stack    = stack( `1 2 3 4` )
+                              position = 4 )
+      exp = stack( `1 2 3` ) ).
   endmethod.
 
   method remove_second_card.
-    assert_that( cut->remove_item( stack = stack( `1 2 3 4` ) position = 2 ) )->equals( stack( `1 3 4` ) ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->remove_item( stack    = stack( `1 2 3 4` )
+                              position = 2 )
+      exp = stack( `1 3 4` ) ).
   endmethod.
 
   method remove_the_middle_two_cards.
@@ -260,7 +272,10 @@ class ltc_make_cards_disappear implementation.
     stack = cut->remove_item( stack = stack position = 2 ).
     stack = cut->remove_item( stack = stack position = 2 ).
 
-    assert_that( stack )->equals( stack( `1 4` ) ).
+    cl_abap_unit_assert=>assert_equals(
+      act = stack
+      exp = stack( `1 4` ) ).
+
   endmethod.
 
 endclass.
@@ -288,15 +303,192 @@ class ltc_make_top_card_disappear implementation.
   endmethod.
 
   method remove_only_card.
-    assert_that( cut->remove_item_from_top( stack = stack( `1` ) ) )->equals_stack( `` ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->remove_item_from_top( stack( `1` ) )
+      exp = stack( `` ) ).
   endmethod.
 
   method remove_a_card.
-    assert_that( cut->remove_item_from_top( stack = stack( `1 2 3` ) ) )->equals_stack( `1 2` ).
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->remove_item_from_top( stack( `1 2 3` ) )
+      exp = stack( `1 2` ) ).
   endmethod.
 
   method remove_two_cards.
+    data(stack) = stack( `1 2 3` ).
 
+    stack = cut->remove_item_from_top( stack ).
+    stack = cut->remove_item_from_top( stack ).
+
+    cl_abap_unit_assert=>assert_equals(
+      act = stack
+      exp = stack( `1` ) ).
+
+  endmethod.
+
+endclass.
+
+
+class ltc_make_bottom_card_disappear definition final for testing
+  duration short
+  risk level harmless
+  inheriting from lth_stack_tester.
+
+  private section.
+
+    methods setup.
+
+    methods remove_only_card for testing raising cx_static_check.
+    methods remove_a_card for testing raising cx_static_check.
+    methods remove_two_cards for testing raising cx_static_check.
+
+endclass.
+
+class ltc_make_bottom_card_disappear implementation.
+
+  method setup.
+    cut = new #( ).
+  endmethod.
+
+  method remove_only_card.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->remove_item_from_bottom( stack( `1` ) )
+      exp = stack( `` ) ).
+  endmethod.
+
+
+  method remove_a_card.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->remove_item_from_bottom( stack( `1 2 3` ) )
+      exp = stack( `2 3` ) ).
+  endmethod.
+
+
+  method remove_two_cards.
+    data(stack) = stack( `1 2 3` ).
+
+    stack = cut->remove_item_from_bottom( stack ).
+    stack = cut->remove_item_from_bottom( stack ).
+
+    cl_abap_unit_assert=>assert_equals(
+      act = stack
+      exp = stack( `3` ) ).
+
+  endmethod.
+
+endclass.
+
+
+class ltc_insert_card_at_bottom definition final for testing
+  duration short
+  risk level harmless
+  inheriting from lth_stack_tester.
+
+  private section.
+
+    methods setup.
+
+    methods insert_second_card for testing raising cx_static_check.
+    methods insert_third_card for testing raising cx_static_check.
+    methods insert_fourth_card for testing raising cx_static_check.
+    methods insert_different_fourth_card for testing raising cx_static_check.
+    methods insert_multiple_cards for testing raising cx_static_check.
+
+endclass.
+
+class ltc_insert_card_at_bottom implementation.
+
+  method setup.
+    cut = new #( ).
+  endmethod.
+
+
+  method insert_second_card.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->insert_item_at_bottom( stack    = stack( `1` )
+                                        new_card = 5 )
+      exp = stack( `5 1` ) ).
+  endmethod.
+
+
+  method insert_third_card.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->insert_item_at_bottom( stack    = stack( `5 1` )
+                                        new_card = 9 )
+      exp = stack( `9 5 1` ) ).
+  endmethod.
+
+
+  method insert_fourth_card.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->insert_item_at_bottom( stack    = stack( `9 5 1` )
+                                        new_card = 2 )
+      exp = stack( `2 9 5 1` ) ).
+  endmethod.
+
+
+  method insert_different_fourth_card.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->insert_item_at_bottom( stack    = stack( `9 5 1` )
+                                        new_card = 8 )
+      exp = stack( `8 9 5 1` ) ).
+  endmethod.
+
+
+  method insert_multiple_cards.
+    data(stack) = stack( '1' ).
+
+    stack = cut->insert_item_at_bottom( stack    = stack
+                                        new_card = 5 ).
+    stack = cut->insert_item_at_bottom( stack    = stack
+                                        new_card = 9 ).
+
+    cl_abap_unit_assert=>assert_equals(
+      act = stack
+      exp = stack( `9 5 1` ) ).
+  endmethod.
+
+endclass.
+
+class ltc_check_length definition final for testing
+  duration short
+  risk level harmless
+  inheriting from lth_stack_tester.
+
+  private section.
+
+    methods setup.
+    methods empty_table for testing raising cx_static_check.
+    METHODS one_card FOR TESTING RAISING cx_static_check.
+    METHODS multiple_cards FOR TESTING RAISING cx_static_check.
+
+endclass.
+
+class ltc_check_length implementation.
+
+  method setup.
+    cut = new #( ).
+  endmethod.
+
+
+  method empty_table.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->get_size_of_stack( value #( ) )
+      exp = 0 ).
+  endmethod.
+
+
+  method one_card.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->get_size_of_stack( stack( '1' ) )
+      exp = 1 ).
+  endmethod.
+
+
+  method multiple_cards.
+    cl_abap_unit_assert=>assert_equals(
+      act = cut->get_size_of_stack( stack( '2 3 5' ) )
+      exp = 3 ).
   endmethod.
 
 endclass.
