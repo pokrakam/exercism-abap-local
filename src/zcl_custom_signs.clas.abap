@@ -1,55 +1,48 @@
-CLASS zcl_custom_signs DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC.
+class zcl_custom_signs definition public final.
 
-  PUBLIC SECTION.
+  public section.
 
     "! Build a sign that includes both of the parameters.
-    METHODS build_sign IMPORTING occasion      TYPE string
-                                 name          TYPE string
-                       RETURNING VALUE(result) TYPE string.
+    methods build_sign importing occasion      type string
+                                 name          type string
+                       returning value(result) type string.
 
     "! Build a birthday sign that conditionally formats the return string.
-    METHODS build_birthday_sign IMPORTING age           TYPE i
-                                RETURNING VALUE(result) TYPE string.
+    methods build_birthday_sign importing age           type i
+                                returning value(result) type string.
 
     "! Build a graduation sign that includes multiple lines
-    METHODS graduation_for IMPORTING name          TYPE string
-                                     year          TYPE i
-                           RETURNING VALUE(result) TYPE string.
+    methods graduation_for importing name          type string
+                                     year          type i
+                           returning value(result) type string.
 
     "! Determine cost based on each character of sign parameter that builds
     "! the template string that includes the currency parameter.
-    METHODS cost_of IMPORTING sign          TYPE string
-                              currency      TYPE string
-                    RETURNING VALUE(result) TYPE string.
+    methods cost_of importing sign          type string
+                              currency      type string
+                    returning value(result) type string.
 
-ENDCLASS.
-
-
-
-CLASS zcl_custom_signs IMPLEMENTATION.
+endclass.
 
 
-  METHOD build_sign.
-    "Implement solution here
-  ENDMETHOD.
+class zcl_custom_signs implementation.
 
+  method build_sign.
+    result = |Happy { occasion } { name }!|.
+  endmethod.
 
-  METHOD build_birthday_sign.
-    "Implement solution here
-  ENDMETHOD.
+  method build_birthday_sign.
+    result = |Happy Birthday! What a { cond #( when age < 50 then `young` else `mature` ) } fellow you are.|.
+  endmethod.
 
+  method graduation_for.
+    result = |Congratulations { name }!\nClass of { year }|.
+  endmethod.
 
-  METHOD graduation_for.
-    "Implement solution here
-  ENDMETHOD.
+  method cost_of.
+    data cost type p length 5 decimals 2.
+    cost = ( 20 + strlen( sign ) * 2 ).
+    result = |Your sign costs { 20 + strlen( sign ) * 2 decimals = 2 } { currency }.|.
+  endmethod.
 
-
-  METHOD cost_of.
-    "Implement solution here
-  ENDMETHOD.
-
-
-ENDCLASS.
+endclass.
