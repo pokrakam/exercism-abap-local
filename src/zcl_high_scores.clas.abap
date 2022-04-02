@@ -1,57 +1,64 @@
-CLASS zcl_high_scores DEFINITION
-  PUBLIC
-  FINAL
-  CREATE PUBLIC .
+class zcl_high_scores definition
+  public
+  final
+  create public .
 
-  PUBLIC SECTION.
-    TYPES integertab TYPE STANDARD TABLE OF i WITH EMPTY KEY.
-    METHODS constructor
-      IMPORTING
-        scores TYPE integertab.
+  public section.
 
-    METHODS list_scores
-      RETURNING
-        VALUE(result) TYPE integertab.
+    types integertab type standard table of i with empty key.
 
-    METHODS latest
-      RETURNING
-        VALUE(result) TYPE i.
+    methods constructor
+      importing
+        scores type integertab.
 
-    METHODS personalbest
-      RETURNING
-        VALUE(result) TYPE i.
+    methods list_scores
+      returning
+        value(result) type integertab.
 
-    METHODS personaltopthree
-      RETURNING
-        VALUE(result) TYPE integertab.
-  PROTECTED SECTION.
-  PRIVATE SECTION.
-    DATA scores_list TYPE integertab.
+    methods latest
+      returning
+        value(result) type i.
 
-ENDCLASS.
+    methods personalbest
+      returning
+        value(result) type i.
+
+    methods personaltopthree
+      returning
+        value(result) type integertab.
+  protected section.
+  private section.
+    data scores_list type integertab.
+
+endclass.
 
 
-CLASS zcl_high_scores IMPLEMENTATION.
+class zcl_high_scores implementation.
 
-  METHOD constructor.
+  method constructor.
     me->scores_list = scores.
-  ENDMETHOD.
+  endmethod.
 
-  METHOD list_scores.
-    " add solution here
-  ENDMETHOD.
+  method list_scores.
+    result = scores_list.
+  endmethod.
 
-  METHOD latest.
-    " add solution here
-  ENDMETHOD.
+  method latest.
+    result = scores_list[ lines( scores_list ) ].
+  endmethod.
 
-  METHOD personalbest.
-    " add solution here
-  ENDMETHOD.
+  method personalbest.
+    result = reduce i(
+        init x = 0
+        for n in scores_list
+        next x = cond #( when n > x then n else x ) ).
+  endmethod.
 
-  METHOD personaltopthree.
-    " add solution here
-  ENDMETHOD.
+  method personaltopthree.
+    result = scores_list.
+    sort result by table_line descending.
+    delete result from 4.
+  endmethod.
 
 
-ENDCLASS.
+endclass.
