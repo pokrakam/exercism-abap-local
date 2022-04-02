@@ -1,50 +1,38 @@
-CLASS zcl_clock DEFINITION
-  PUBLIC
-  CREATE PUBLIC.
+class zcl_clock definition
+  public
+  create public.
 
-  PUBLIC SECTION.
+  public section.
 
-    METHODS constructor
-      IMPORTING
-        !hours   TYPE i
-        !minutes TYPE i DEFAULT 0.
-    METHODS get
-      RETURNING
-        VALUE(result) TYPE string.
-    METHODS add
-      IMPORTING
-        !minutes TYPE i.
-    METHODS sub
-      IMPORTING
-        !minutes TYPE i.
+    methods constructor importing hours   type i
+                                  minutes type i default 0.
+    methods get returning value(result) type string.
+    methods add importing minutes type i.
+    methods sub importing minutes type i.
 
-  PRIVATE SECTION.
+  private section.
+    data time type t.
 
-* add solution here
-
-ENDCLASS.
+endclass.
 
 
 
-CLASS zcl_clock IMPLEMENTATION.
+class zcl_clock implementation.
 
-  METHOD add.
-* add solution here
-  ENDMETHOD.
+  method constructor.
+    time = hours * 3600 + minutes * 60.
+  endmethod.
 
+  method add.
+    time = time + minutes * 60.
+  endmethod.
 
-  METHOD constructor.
-* add solution here
-  ENDMETHOD.
+  method get.
+    result = |{ time(2) }:{ time+2(2) }|.
+  endmethod.
 
+  method sub.
+    time = time - minutes * 60.
+  endmethod.
 
-  METHOD get.
-* add solution here
-  ENDMETHOD.
-
-
-  METHOD sub.
-* add solution here
-  ENDMETHOD.
-ENDCLASS.
-
+endclass.
